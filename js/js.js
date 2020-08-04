@@ -5,8 +5,10 @@ const App = {
   
       console.log("After start", this);
     },
+
   
   //testeeee
+
     events: {},
   
     store: {}, 
