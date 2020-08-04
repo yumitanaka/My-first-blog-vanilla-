@@ -5,7 +5,7 @@ const App = {
   
       console.log("After start", this);
     },
-  
+  /////lalalallaa
   
     events: {},
   
