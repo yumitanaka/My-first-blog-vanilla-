@@ -30,7 +30,7 @@ const App = {
       //this.app.style.backgroundColor = "gray"; //Remover
       document.body.appendChild(this.app);
 
-      //Painel lateral esquerdo
+      //Painel lateral esquerdo 
       this.painelEsquerdo = document.createElement("div");
       this.painelEsquerdo.style.width = "25%";
       this.painelEsquerdo.style.height = "100%";
