@@ -104,9 +104,9 @@ const App = {
 
       //Adicionar botão de Postagem
       this.botaoPostagem = document.createElement("button");
-      this.botaoPostagem.style.height="36px";
-      this.botaoPostagem.style.border= "1px solid #f2f2f2";
-      this.botaoPostagem.style.borderRadius= "4px";
+      this.botaoPostagem.style.height = "36px";
+      this.botaoPostagem.style.border = "1px solid #f2f2f2";
+      this.botaoPostagem.style.borderRadius = "4px";
       this.botaoPostagem.style.fontFamily = "arial";
       this.botaoPostagem.style.borderColor = "gray";
       this.conteudoNovo3 = document.createTextNode("Criar novo post");
@@ -114,13 +114,13 @@ const App = {
       this.textoDescritivo.appendChild(this.botaoPostagem);
       //Função mouseOver e mouseOut
       this.botaoPostagem.onmouseover = function () {
-          console.log(this);//Remover
-          //this.style.borderColor = "red";
+        console.log(this);//Remover
+        //this.style.borderColor = "red";
       };
 
       this.botaoPostagem.onmouseout = function () {
-          console.log(this);//Remover
-          //this.style.borderColor = "white";
+        console.log(this);//Remover
+        //this.style.borderColor = "white";
       };
 
 
@@ -222,24 +222,131 @@ const App = {
       this.icones.appendChild(this.linkedinIcon);
 
 
-
       //Painel lateral direito
       this.painelDireito = document.createElement("div");
       this.painelDireito.style.width = "75%";
       this.painelDireito.style.height = "100%";
       this.painelDireito.style.position = "fixed";
       this.painelDireito.style.zIndex = "1";
-      this.painelDireito.style.top = "0";
+      //this.painelDireito.style.top = "5%";
       this.painelDireito.style.overflowX = "hidden";
       this.painelDireito.style.maxWidth = "75%";
-      this.painelDireito.style.backgroundColor = "silver";//Remover
+      //this.painelDireito.style.backgroundColor = "silver";//Remover
       this.painelDireito.style.right = "0";
       this.app.appendChild(this.painelDireito);
-      //Centralizando elementos do painel
-      this.centralizarDireito = document.createElement("div");
-      this.centralizarDireito.style.width = "150px";
-      this.centralizarDireito.style.borderRadius = "50%";
-      this.painelDireito.appendChild(this.centralizarDireito);
+      //Adicionando DIV para titulo do post
+      this.divTextoBlog = document.createElement("div");
+      this.divTextoBlog.style.width = "90%";
+      this.divTextoBlog.style.height = "2%";
+      this.divTextoBlog.style.maxWidth = "100%";
+      this.divTextoBlog.style.lineHeight = "50%";
+      this.divTextoBlog.style.textAlign = "left";
+      this.divTextoBlog.style.padding = "20px";
+      this.divTextoBlog.style.marginTop = "20px";
+      this.divTextoBlog.style.fontFamily = "georgia";
+      this.divTextoBlog.style.fontSize = "30px";
+      this.divTextoBlog.style.backgroundColor = "pink"; //Remover 
+      this.painelDireito.appendChild(this.divTextoBlog);
+      //Titulo do post
+      this.tituloPost = document.createElement("h2");
+      this.tituloPost = document.createTextNode("TITLE");
+      this.divTextoBlog.appendChild(this.tituloPost);
+
+      //Adicionando DIV para titulo/data do post
+      this.divTituloDescricao = document.createElement("div");
+      this.divTituloDescricao.style.width = "90%";
+      this.divTituloDescricao.style.height = "1%";
+      this.divTituloDescricao.style.lineHeight = "50%";
+      this.divTituloDescricao.style.maxWidth = "100%";
+      //this.divTituloDescricao.style.lineHeight = "100px";
+      this.divTituloDescricao.style.textAlign = "left";
+      this.divTituloDescricao.style.padding = "20px";
+      this.divTituloDescricao.style.marginTop = "5px";
+      this.divTituloDescricao.style.fontFamily = "georgia";
+      this.divTituloDescricao.style.fontSize = "12px";
+      this.divTituloDescricao.style.backgroundColor = "orange"; //Remover 
+      this.painelDireito.appendChild(this.divTituloDescricao);
+      //Titulo/data do post
+      this.tituloDescricao = document.createElement("h5");
+      this.tituloDescricao = document.createTextNode("Title description, Aug 6, 2020");
+      this.divTituloDescricao.appendChild(this.tituloDescricao);
+
+      //Adicionando DIV para Conteudo do post
+      this.divConteudo = document.createElement("div");
+      this.divConteudo.style.width = "90%";
+      this.divConteudo.style.height = "70%";
+      this.divConteudo.style.maxWidth = "100%";
+      this.divConteudo.style.textAlign = "left";
+      this.divConteudo.style.padding = "20px";
+      this.divConteudo.style.marginTop = "20px";
+      this.divConteudo.style.fontFamily = "georgia";
+      this.divConteudo.style.fontSize = "20px";
+      this.divConteudo.style.backgroundColor = "pink"; //Remover 
+      this.painelDireito.appendChild(this.divConteudo);
+
+      //Conteudo do post <<--
+      //this.Conteudo = document.createElement("p");
+      //this.Conteudo = document.createTextNode("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget tellus nec enim tincidunt gravida ut a nulla. Nullam eu sem fringilla, aliquet justo vel, tempor sapien. Fusce sit amet sagittis tortor. Sed vel leo sapien. Phasellus ac elementum tellus, ut imperdiet odio. Proin ultrices, tellus id tincidunt luctus, augue justo gravida nibh, non suscipit elit orci eu orci. Duis et velit convallis, efficitur neque vitae, luctus nulla. Morbi eget efficitur ex, eu condimentum turpis. Nulla scelerisque cursus mauris, viverra scelerisque tortor auctor vestibulum. Nam vitae quam sit amet lacus porta scelerisque. Nam fringilla ante in arcu maximus commodo. Nulla accumsan nulla ante, vitae scelerisque lectus scelerisque quis. Etiam facilisis, arcu eu eleifend euismod, erat risus egestas turpis, eu facilisis augue erat eget dui. Nulla id est sit amet tortor viverra porta at iaculis arcu. Quisque eu rutrum urna, in suscipit ipsum. Ut ac aliquet purus. Vestibulum faucibus libero id justo tempor vestibulum. Suspendisse eu pharetra purus, in euismod tortor.");
+      //this.divConteudo.appendChild(this.Conteudo);
+
+
+      //DIV Input de texto
+      //this.divPainelInput = document.createElement("div");
+      //Setar estilo da div
+      //this.divPainelInput.style.textAlign = "text-top";
+      //this.divPainelInput.style.justifyContent = "center";
+      //this.divPainelInput.style.height = "90%";
+      //this.divPainelInput.style.width = "100%";
+      //this.divPainelInput.style.lineHeight="0px";
+      //this.divPainelInput.style.display = "flex";
+      //this.divPainelInput.style.flexDirection = "colum";
+      //this.divPainelInput.style.alignItems = "center";
+      //this.divPainelInput.style.backgroundColor = "yellow";
+      //this.divConteudo.appendChild(this.divPainelInput);
+
+      //Input titulo
+      this.tituloInput = document.createElement("input");
+      this.tituloInput.style.width = "100%";
+      this.tituloInput.style.height = "5%";
+      this.tituloInput.style.border = "1px solid #d0d0d0";
+      this.tituloInput.style.marginBottom="10px";
+      this.tituloInput.style.outline = "0";
+      this.tituloInput.style.boxShadow = "0 0 0 0 rgba(136, 136, 136, 0)";
+      this.tituloInput.style.fontSize = "small";
+      this.tituloInput.style.transition = "box-shadow .3s";
+      this.divConteudo.appendChild(this.tituloInput);
+
+      //Input de texto
+      this.painelInput = document.createElement("input");
+      this.painelInput.style.width = "100%";
+      this.painelInput.style.height = "80%";
+      this.painelInput.style.border = "1px solid #d0d0d0";
+      this.painelInput.style.outline = "0";
+      this.painelInput.style.boxShadow = "0 0 0 0 rgba(136, 136, 136, 0)";
+      this.painelInput.style.fontSize = "small";
+      this.painelInput.style.transition = "box-shadow .3s";
+      this.divConteudo.appendChild(this.painelInput);
+
+      //DIV botão enviar
+      this.divBotao = document.createElement("div");
+      //Setar estilo da div
+      this.divBotao.style.textAlign = "center";
+      this.divBotao.style.justifyContent = "center";
+      this.divBotao.style.height = "12%";
+      this.divBotao.style.width = "100%";
+      this.divBotao.style.display = "flex";
+      this.divBotao.style.flexDirection = "colum";
+      this.divBotao.style.alignItems = "center";
+      this.divConteudo.appendChild(this.divBotao);
+      //Botao enviar
+      this.Botao = document.createElement("button");
+      this.Botao.style.height="36px";
+      this.Botao.style.border= "1px solid #f2f2f2";
+      this.Botao.style.borderRadius= "4px";
+      this.textoBotao = document.createTextNode("Enviar Postagem");
+      this.Botao.appendChild(this.textoBotao);
+      this.divBotao.appendChild(this.Botao);
+      
     },
 
 
