@@ -27,7 +27,7 @@ const App = {
       this.app.style.position = "fixed";
       this.app.style.top = "0";
       this.app.style.left = "0";
-      //this.app.style.backgroundColor = "gray"; //Remover
+      //this.app.style.backgroundColor = "gray";  //Remover
       document.body.appendChild(this.app);
 
       //Painel lateral esquerdo 
