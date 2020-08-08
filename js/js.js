@@ -6,6 +6,8 @@ const App = {
     App.events.facebookIcon();
     App.events.instagramIcon();
     App.events.linkedinIcon();
+    App.controller.renderMenuItens(); //Renderiza menu dos itens
+
     console.log("After start", this);
   },
 
@@ -73,7 +75,32 @@ const App = {
     },
   },
 
-  store: {},
+  store: {
+    posts: [
+      { id: 1, title: "Título 1", body: "Corpo 1" },
+      { id: 2, title: "Título 2", body: "Corpo 2" },
+      { id: 3, title: "Título 3", body: "Corpo 3" },
+    ]
+  },
+
+  controller: {
+    renderMenuItens: function () {
+      console.log("[]...", App.store.posts);
+
+      for (let i = 0; i < App.store.posts.length; i++) {
+        const post = App.store.posts[i];
+        const el = document.createElement("div");
+
+        //innerHTML
+        el.innerHTML = post.title;
+
+        App.components.menuPosts[post.title.id] = el;
+        //Componente 'el' vinculado ao menuPosts
+        App.components.menu.appendChild(el);
+
+      }
+    }
+  },
 
   router: {
     routes: []
@@ -81,6 +108,8 @@ const App = {
 
   components: {
     app: null,
+    menu: null,
+    menuPosts: {}, //objeto
 
     createComponents: function () {
       //Componente Principal
@@ -151,17 +180,28 @@ const App = {
       this.PainelBottom.style.textAlign = "center";
       //this.PainelBottom.style.backgroundColor = "pink"; //Remover 
       this.painelEsquerdo.appendChild(this.PainelBottom);
-      //Adicionando texto descritivo
+      //Adicionando DIV para lista de posts
+      this.menu = document.createElement("div");
+      //this.menu.style.width = "100%";
+      //this.menu.style.height = "40%";
+      //this.menu.style.maxWidth = "100%";
+      //this.menu.style.lineHeight = "100px";
+      //this.menu.style.textAlign = "center";
+      this.menu.style.fontFamily = "arial";
+      this.menu.style.fontSize = "12px";
+      //this.menu.style.backgroundColor = "yellow"; //Remover 
+      this.PainelBottom.appendChild(this.menu);
+      //Adicionando texto descritivo do blog
       //Texto
       this.textoDescritivo = document.createElement("div");
       this.textoDescritivo.style.width = "100%";
-      this.textoDescritivo.style.height = "60%";
+      this.textoDescritivo.style.height = "10%";
       this.textoDescritivo.style.maxWidth = "100%";
-      this.textoDescritivo.style.lineHeight = "100px";
       this.textoDescritivo.style.textAlign = "center";
       this.textoDescritivo.style.fontFamily = "arial";
+      this.textoDescritivo.style.marginTop = "5%";
       this.textoDescritivo.style.fontSize = "12px";
-      //this.textoDescritivo.style.backgroundColor = "gray"; //Remover 
+      //this.textoDescritivo.style.backgroundColor = "purple"; //Remover 
       this.PainelBottom.appendChild(this.textoDescritivo);
       this.texto2 = document.createTextNode("A blog page made with javascript, react and vue.js.");
       this.textoDescritivo.appendChild(this.texto2);
@@ -172,7 +212,8 @@ const App = {
       this.botaoPostagem.style.border = "1px solid #f2f2f2";
       this.botaoPostagem.style.borderRadius = "4px";
       this.botaoPostagem.style.fontFamily = "arial";
-      this.botaoPostagem.style.borderColor = "gray";
+      //this.botaoPostagem.style.borderColor = "gray";  //Remover
+      this.botaoPostagem.style.marginTop = "15%";
       this.conteudoNovo3 = document.createTextNode("Criar novo post");
       this.botaoPostagem.appendChild(this.conteudoNovo3);
       this.textoDescritivo.appendChild(this.botaoPostagem);
@@ -186,6 +227,7 @@ const App = {
       this.icones.style.maxWidth = "100%";
       this.icones.style.lineHeight = "100px";
       this.icones.style.textAlign = "center";
+      this.icones.style.marginTop = "30%";
       //this.titulo.style.backgroundColor = "blue";  //Remover
       this.PainelBottom.appendChild(this.icones);
       //Icone Facebook
@@ -198,7 +240,7 @@ const App = {
       this.facebookIcon.style.marginRight = "15px";
       this.facebookIcon.src = 'assets/facebook.png';
       this.icones.appendChild(this.facebookIcon);
-       //App.events.facebookIcon();
+      //App.events.facebookIcon();
 
       //Icone Instagram 
       this.instagramIcon = document.createElement("img");
@@ -210,7 +252,7 @@ const App = {
       this.instagramIcon.style.marginRight = "15px";
       this.instagramIcon.src = 'assets/instagram.png';
       this.icones.appendChild(this.instagramIcon);
-       //App.events.instagramIcon();
+      //App.events.instagramIcon();
 
 
       //Icone Linkedin
