@@ -2,11 +2,76 @@ const App = {
   init: function () {
     console.log("Start");
     this.components.createComponents();
-
+    App.events.botaoPostagem();
+    App.events.facebookIcon();
+    App.events.instagramIcon();
+    App.events.linkedinIcon();
     console.log("After start", this);
   },
 
-  events: {},
+  events: {
+    //Função mouseOver e mouseOut - Botao postagem
+    botaoPostagem: function () {
+      App.components.botaoPostagem.onmouseover = function () {
+        App.components.botaoPostagem.style.borderColor = "silver";
+      };
+
+      App.components.botaoPostagem.onmouseout = function () {
+        App.components.botaoPostagem.style.borderColor = "gray";
+      };
+    },
+
+    //Função mouseOver e mouseOut - facebookIcon
+    facebookIcon: function () {
+      App.components.facebookIcon.onmouseover = function () {
+        App.components.facebookIcon.style.opacity = "1.0";
+        App.components.facebookIcon.style.cursor = "hand";
+      };
+
+      App.components.facebookIcon.onmouseout = function () {
+        App.components.facebookIcon.style.opacity = "0.7";
+        App.components.facebookIcon.style.cursor = "pointer";
+      };
+      //Função Onclick  
+      App.components.facebookIcon.onclick = function () {
+        window.open("https://www.facebook.com/tanakayuuuu");
+      };
+    },
+
+    //Função mouseOver e mouseOut - instagramIcon
+    instagramIcon: function () {
+      App.components.instagramIcon.onmouseover = function () {
+        App.components.instagramIcon.style.opacity = "1.0";
+        App.components.instagramIcon.style.cursor = "hand";
+      };
+
+      App.components.instagramIcon.onmouseout = function () {
+        App.components.instagramIcon.style.opacity = "0.7";
+        App.components.instagramIcon.style.cursor = "pointer";
+      };
+      //Função Onclick
+      App.components.instagramIcon.onclick = function () {
+        window.open("https://www.instagram.com/summersnow64/?hl=en");
+      };
+    },
+
+    //Função mouseOver e mouseOut - linkedinIcon
+    linkedinIcon: function () {
+      App.components.linkedinIcon.onmouseover = function () {
+        App.components.linkedinIcon.style.opacity = "1.0";
+        App.components.linkedinIcon.style.cursor = "hand";
+      };
+
+      App.components.linkedinIcon.onmouseout = function () {
+        App.components.linkedinIcon.style.opacity = "0.7";
+        App.components.linkedinIcon.style.cursor = "pointer";
+      };
+      //Função Onclick
+      App.components.linkedinIcon.onclick = function () {
+        window.open("https://www.linkedin.com/in/elise-yumi-tanaka/");
+      };
+    },
+  },
 
   store: {},
 
@@ -23,7 +88,6 @@ const App = {
       //Setar estilo da div
       this.app.style.width = "100%";
       this.app.style.height = "100%";
-
       this.app.style.position = "fixed";
       this.app.style.top = "0";
       this.app.style.left = "0";
@@ -112,16 +176,7 @@ const App = {
       this.conteudoNovo3 = document.createTextNode("Criar novo post");
       this.botaoPostagem.appendChild(this.conteudoNovo3);
       this.textoDescritivo.appendChild(this.botaoPostagem);
-      //Função mouseOver e mouseOut
-      this.botaoPostagem.onmouseover = function () {
-        console.log(this);//Remover
-        //this.style.borderColor = "red";
-      };
-
-      this.botaoPostagem.onmouseout = function () {
-        console.log(this);//Remover
-        //this.style.borderColor = "white";
-      };
+      //App.events.botaoPostagem();
 
 
       //Adicionando icones
@@ -142,24 +197,8 @@ const App = {
       this.facebookIcon.style.transform = "translateY(-20%)";
       this.facebookIcon.style.marginRight = "15px";
       this.facebookIcon.src = 'assets/facebook.png';
-      //Função mouseOver e mouseOut
-      this.facebookIcon.onmouseover = function () {
-        console.log(this);//Remover
-        this.style.opacity = "1.0";
-        this.style.cursor = "hand";
-      };
-
-      this.facebookIcon.onmouseout = function () {
-        this.style.opacity = "0.7";
-        this.style.cursor = "pointer";
-      };
-
-      //Função Onclick
-      this.facebookIcon.onclick = function () {
-        console.log(this);//Remove
-        window.open("https://www.facebook.com/tanakayuuuu");
-      };
       this.icones.appendChild(this.facebookIcon);
+       //App.events.facebookIcon();
 
       //Icone Instagram 
       this.instagramIcon = document.createElement("img");
@@ -171,25 +210,8 @@ const App = {
       this.instagramIcon.style.marginRight = "15px";
       this.instagramIcon.src = 'assets/instagram.png';
       this.icones.appendChild(this.instagramIcon);
-      //Função mouseOver e mouseOut
-      this.instagramIcon.onmouseover = function () {
-        console.log(this);//Remover
-        this.style.opacity = "1.0";
-        this.style.cursor = "hand";
-      };
+       //App.events.instagramIcon();
 
-      this.instagramIcon.onmouseout = function () {
-        this.style.opacity = "0.7";
-        this.style.cursor = "pointer";
-      };
-
-      //Função Onclick
-      this.instagramIcon.onclick = function () {
-        console.log(this);//Remove
-        window.open("https://www.instagram.com/summersnow64/?hl=en");
-      };
-
-      this.icones.appendChild(this.instagramIcon);
 
       //Icone Linkedin
       this.linkedinIcon = document.createElement("img");
@@ -201,25 +223,7 @@ const App = {
       this.linkedinIcon.style.marginRight = "15px";
       this.linkedinIcon.src = 'assets/linkedin.png';
       this.icones.appendChild(this.linkedinIcon);
-      //Função mouseOver e mouseOut
-      this.linkedinIcon.onmouseover = function () {
-        console.log(this);//Remover
-        this.style.opacity = "1.0";
-        this.style.cursor = "hand";
-      };
-
-      this.linkedinIcon.onmouseout = function () {
-        this.style.opacity = "0.7";
-        this.style.cursor = "pointer";
-      };
-
-      //Função Onclick
-      this.linkedinIcon.onclick = function () {
-        console.log(this);//Remove
-        window.open("https://www.linkedin.com/in/elise-yumi-tanaka/");
-      };
-
-      this.icones.appendChild(this.linkedinIcon);
+      //App.events.linkedinIcon();
 
 
       //Painel lateral direito
@@ -290,26 +294,12 @@ const App = {
       //this.divConteudo.appendChild(this.Conteudo);
 
 
-      //DIV Input de texto
-      //this.divPainelInput = document.createElement("div");
-      //Setar estilo da div
-      //this.divPainelInput.style.textAlign = "text-top";
-      //this.divPainelInput.style.justifyContent = "center";
-      //this.divPainelInput.style.height = "90%";
-      //this.divPainelInput.style.width = "100%";
-      //this.divPainelInput.style.lineHeight="0px";
-      //this.divPainelInput.style.display = "flex";
-      //this.divPainelInput.style.flexDirection = "colum";
-      //this.divPainelInput.style.alignItems = "center";
-      //this.divPainelInput.style.backgroundColor = "yellow";
-      //this.divConteudo.appendChild(this.divPainelInput);
-
       //Input titulo
       this.tituloInput = document.createElement("input");
       this.tituloInput.style.width = "100%";
       this.tituloInput.style.height = "5%";
       this.tituloInput.style.border = "1px solid #d0d0d0";
-      this.tituloInput.style.marginBottom="10px";
+      this.tituloInput.style.marginBottom = "10px";
       this.tituloInput.style.outline = "0";
       this.tituloInput.style.boxShadow = "0 0 0 0 rgba(136, 136, 136, 0)";
       this.tituloInput.style.fontSize = "small";
@@ -340,13 +330,13 @@ const App = {
       this.divConteudo.appendChild(this.divBotao);
       //Botao enviar
       this.Botao = document.createElement("button");
-      this.Botao.style.height="36px";
-      this.Botao.style.border= "1px solid #f2f2f2";
-      this.Botao.style.borderRadius= "4px";
+      this.Botao.style.height = "36px";
+      this.Botao.style.border = "1px solid #f2f2f2";
+      this.Botao.style.borderRadius = "4px";
       this.textoBotao = document.createTextNode("Enviar Postagem");
       this.Botao.appendChild(this.textoBotao);
       this.divBotao.appendChild(this.Botao);
-      
+
     },
 
 
