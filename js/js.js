@@ -117,16 +117,16 @@ const App = {
     },
 
     renderPostContent: function () {
-
+      //Mostrar postagens
       App.components.divTextoBlog.style.display = "block";
       App.components.divTituloPost.style.display = "block";
       App.components.divTituloPost.style.display = "block";
       App.components.divTituloDescricao.style.display = "block";
-      //App.components.divTituloDes.style.display = "block";
+      App.components.divTituloDesc.style.display = "block";
       App.components.divConteudo.style.display = "block";
       App.components.divCont.style.display = "block";
+
       //Esconder criacao de post/elementos com display none
-      App.components.divConteudo.style.display = "none";
       App.components.tituloInput.style.display = "none";
       App.components.painelInput.style.display = "none";
       App.components.divBotao.style.display = "none";
@@ -142,14 +142,11 @@ const App = {
 
     renderPostInput: function () {
       //Mostrar criacao de post/elementos
-      console.log(App.components.tituloPost);
-
       App.components.divTextoBlog.style.display = "none";
       App.components.divTituloDescricao.style.display = "none";
       App.components.divTituloDesc.style.display = "none";
-      //App.components.tituloDescricao.style.display = "none";
       App.components.divConteudo.style.display = "block";
-      //App.components.tituloPost.style.display = "none";
+      //Esconder postagens
       App.components.divCont.style.display = "none";
       App.components.tituloInput.style.display = "block";
       App.components.painelInput.style.display = "block";
@@ -375,7 +372,6 @@ const App = {
       this.divTituloDescricao.appendChild(this.divTituloDesc);
       this.tituloDescricao = document.createTextNode("Title description, Aug 6, 2020");
       this.divTituloDesc.appendChild(this.tituloDescricao);
-
 
       //Adicionando DIV para Conteudo do post
       this.divConteudo = document.createElement("div");
