@@ -132,12 +132,28 @@ const App = {
       App.components.divBotao.style.display = "none";
       App.components.Botao.style.display = "none";
 
-      //popular o div com o conteudo (body) do post
+      //Popular o div com o conteudo (body) do post
+      //Mostrar o div com conteudo
+      let tituloPostagem = "";
+      let conteudeudoPostagem = "";
 
-      //mostrar o div do conteudo
+      if (App.store.selectedPost == 1) {
+        tituloPostagem += App.store.posts[0].title;
+        conteudeudoPostagem += App.store.posts[0].body;
+
+      }
+      else if (App.store.selectedPost == 2) {
+        tituloPostagem += App.store.posts[1].title;
+        conteudeudoPostagem += App.store.posts[1].body;
+      }
+      else {
+        tituloPostagem += App.store.posts[2].title;
+        conteudeudoPostagem += App.store.posts[2].body;
+      }
+      App.components.divTituloPost.innerHTML = tituloPostagem;
+      App.components.divCont.innerHTML = conteudeudoPostagem;
 
 
-      //pegar conteudo do post da cor pink e setar o innerHTML 
     },
 
     renderPostInput: function () {
