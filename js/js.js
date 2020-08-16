@@ -6,8 +6,8 @@ const App = {
     App.events.facebookIcon();
     App.events.instagramIcon();
     App.events.linkedinIcon();
-    App.controller.renderMenuItens(); //Renderiza menu dos itens
-
+    App.events.Botao();
+    //App.controller.renderMenuItens(); //Renderiza menu dos itens <------------
     console.log("After start", this);
   },
 
@@ -78,43 +78,43 @@ const App = {
         window.open("https://www.linkedin.com/in/elise-yumi-tanaka/");
       };
     },
+
+    //-------------CRUD---------------//
+    Botao: function () {
+      //Função mouseOver e mouseOut 
+      App.components.Botao.onmouseover = function () {
+        App.components.Botao.style.borderColor = "silver";
+        App.components.Botao.style.cursor = "hand";
+      };
+
+      App.components.Botao.onmouseout = function () {
+        App.components.Botao.style.borderColor = "gray";
+        App.components.Botao.style.cursor = "pointer";
+      };
+
+      //Função CRUD - Create e Save
+      App.components.Botao.onclick = function () {
+        App.controller.createPost(); //função criar post
+        App.controller.savePost(); //função salvar post
+      };
+    },
+
+
   },
 
   store: {
-    posts: [
+    /*posts: [
       { id: 1, title: "Título 1", body: "Corpo 1" },
       { id: 2, title: "Título 2", body: "Corpo 2" },
       { id: 3, title: "Título 3", body: "Corpo 3" },
-    ],
+    ],*/
+    //App: controller.savePost(),
 
-    selectedPost: null,
+
   },
 
   controller: {
-    renderMenuItens: function () {
-      //console.log("[]...", App.store.posts);
 
-      for (let i = 0; i < App.store.posts.length; i++) {
-        const post = App.store.posts[i];
-        const el = document.createElement("div");
-
-        //innerHTML
-        el.innerHTML = post.title;
-
-        //Evento ao clicar no post
-        el.onclick = function () {
-          console.log("[click]...", post);
-          App.store.selectedPost = post.id; //seta id dentro do post
-          App.controller.renderPostContent(); //funcao que vai renderizar o conteudo de cada post
-        }
-
-
-        App.components.menuPosts[post.title.id] = el;
-        //Componente 'el' vinculado ao menuPosts
-        App.components.menu.appendChild(el);
-
-      }
-    },
 
     renderPostContent: function () {
       //Mostrar postagens
@@ -132,7 +132,12 @@ const App = {
       App.components.divBotao.style.display = "none";
       App.components.Botao.style.display = "none";
 
-      //Popular o div com o conteudo (body) do post
+      //popular o div com o conteudo (body) do post
+      /*
+      function insertConteudo() {
+      }
+      */
+
       //Mostrar o div com conteudo
       let tituloPostagem = "";
       let conteudeudoPostagem = "";
@@ -153,7 +158,6 @@ const App = {
       App.components.divTituloPost.innerHTML = tituloPostagem;
       App.components.divCont.innerHTML = conteudeudoPostagem;
 
-
     },
 
     renderPostInput: function () {
@@ -169,7 +173,66 @@ const App = {
       App.components.divBotao.style.display = "block";
       App.components.Botao.style.display = "block";
 
-    }
+    },
+
+    //Variaveis para createPost e savePost
+    var: inputTitulo = 0,
+    var: inputPainel = 0,
+    var: titulo = Array(),
+    var: corpo = Array(),
+
+    createPost: function () //Adiciona novo post no array de posts em store.posts
+    {
+      inputTitulo++;
+      console.log('Tamanho inputTitulo...', inputTitulo);
+
+      inputPainel++;
+      console.log('Tamanho inputPainel...', inputPainel);
+
+    },
+
+
+    savePost: function () //Função salvar post
+    {
+      titulo[inputTitulo - 1] = App.components.tituloInput.value;
+      //console.log('titulo...', titulo[inputTitulo] );
+      App.components.tituloInput.value = "";
+
+      corpo[inputPainel - 1] = App.components.painelInput.value;
+      //console.log('corpo...', corpo[inputPainel]);
+      App.components.painelInput.value = "";
+
+      //alert("Postagem enviada com sucesso!"); //Mensagem de confirmação de postagem
+
+      console.log('Titulos...', titulo);
+      console.log('Conteudos...', corpo);
+
+      tituloLenght = titulo.length;
+      //console.log('tituloLenght...', tituloLenght);
+
+
+      const el = document.createElement("div"); //Função para adicionar titulo ao painel esquerdo
+      el.style.textAlign= "left";
+      el.style.marginTop = "8px";
+      el.style.marginLeft = "15px";
+      el.id = titulo[inputTitulo - 1]; //el.className = "titulos";
+      el.innerHTML = titulo[inputTitulo - 1];
+
+      App.components.menu.appendChild(el);
+    },
+
+
+
+
+    updatePost: function () //Editar o conteudo postado
+    {
+
+    },
+
+    deletePost: function () //Deletar o post
+    {
+
+    },
 
   },
 
@@ -194,7 +257,7 @@ const App = {
       //this.app.style.backgroundColor = "gray";  //Remover
       document.body.appendChild(this.app);
 
-      //Painel lateral esquerdo 
+      //Painel lateral esquerdo
       this.painelEsquerdo = document.createElement("div");
       this.painelEsquerdo.style.width = "25%";
       this.painelEsquerdo.style.height = "100%";
@@ -211,12 +274,12 @@ const App = {
       //Painel Top
       this.PainelTop = document.createElement("div");
       this.PainelTop.style.width = "100%";
-      this.PainelTop.style.height = "50%";
+      this.PainelTop.style.height = "45%";
       this.PainelTop.style.marginTop = "0%";
       this.PainelTop.style.maxWidth = "100%";
       //this.PainelTop.style.backgroundColor = "red";  //Remover
       this.painelEsquerdo.appendChild(this.PainelTop);
-      //Adicionando elementos ao Painel Top 
+      //Adicionando elementos ao Painel Top
       //Foto do Perfil
       this.foto = document.createElement("img");
       this.foto.style.width = "60%";
@@ -230,7 +293,7 @@ const App = {
       //Titulo
       this.titulo = document.createElement("div");
       this.titulo.style.width = "100%";
-      this.titulo.style.height = "30%";
+      this.titulo.style.height = "20%";
       this.titulo.style.maxWidth = "100%";
       this.titulo.style.lineHeight = "100px";
       this.titulo.style.textAlign = "center";
@@ -247,20 +310,17 @@ const App = {
       this.PainelBottom = document.createElement("div");
       this.PainelBottom.style.width = "100%"
       this.PainelBottom.style.height = "50%";
-      this.PainelBottom.style.top = "15%";
+      this.PainelBottom.style.top = "5%";
       this.PainelBottom.style.textAlign = "center";
-      //this.PainelBottom.style.backgroundColor = "pink"; //Remover 
+      //this.PainelBottom.style.backgroundColor = "pink"; //Remover
       this.painelEsquerdo.appendChild(this.PainelBottom);
       //Adicionando DIV para lista de posts
       this.menu = document.createElement("div");
-      //this.menu.style.width = "100%";
-      //this.menu.style.height = "40%";
-      //this.menu.style.maxWidth = "100%";
-      //this.menu.style.lineHeight = "100px";
-      //this.menu.style.textAlign = "center";
+      this.menu.style.height = "30%";
       this.menu.style.fontFamily = "arial";
       this.menu.style.fontSize = "12px";
-      //this.menu.style.backgroundColor = "yellow"; //Remover 
+      //this.menu.style.backgroundColor = "yellow"; //Remover
+      this.menu.style.overflowY = "scroll";
       this.PainelBottom.appendChild(this.menu);
       //Adicionando texto descritivo do blog
       //Texto
@@ -270,9 +330,9 @@ const App = {
       this.textoDescritivo.style.maxWidth = "100%";
       this.textoDescritivo.style.textAlign = "center";
       this.textoDescritivo.style.fontFamily = "arial";
-      this.textoDescritivo.style.marginTop = "15%";
+      this.textoDescritivo.style.marginTop = "10%";
       this.textoDescritivo.style.fontSize = "12px";
-      //this.textoDescritivo.style.backgroundColor = "purple"; //Remover 
+      //this.textoDescritivo.style.backgroundColor = "purple"; //Remover
       this.PainelBottom.appendChild(this.textoDescritivo);
       this.texto2 = document.createTextNode("A blog page made with javascript, react and vue.js.");
       this.textoDescritivo.appendChild(this.texto2);
@@ -312,7 +372,7 @@ const App = {
       this.icones.appendChild(this.facebookIcon);
       //App.events.facebookIcon();
 
-      //Icone Instagram 
+      //Icone Instagram
       this.instagramIcon = document.createElement("img");
       this.instagramIcon.style.height = "50%";
       this.instagramIcon.style.opacity = "0.6";
@@ -361,7 +421,7 @@ const App = {
       this.divTextoBlog.style.marginTop = "20px";
       this.divTextoBlog.style.fontFamily = "georgia";
       this.divTextoBlog.style.fontSize = "30px";
-      this.divTextoBlog.style.backgroundColor = "pink"; //Remover 
+      this.divTextoBlog.style.backgroundColor = "pink"; //Remover
       this.painelDireito.appendChild(this.divTextoBlog);
       //Titulo do post
       this.divTituloPost = document.createElement("div");
@@ -380,7 +440,7 @@ const App = {
       this.divTituloDescricao.style.marginTop = "5px";
       this.divTituloDescricao.style.fontFamily = "georgia";
       this.divTituloDescricao.style.fontSize = "12px";
-      this.divTituloDescricao.style.backgroundColor = "orange"; //Remover 
+      this.divTituloDescricao.style.backgroundColor = "orange"; //Remover
       //this.divTituloDescricao.style.display = "block";
       this.painelDireito.appendChild(this.divTituloDescricao);
       //Titulo/data do post
@@ -399,10 +459,10 @@ const App = {
       this.divConteudo.style.marginTop = "20px";
       this.divConteudo.style.fontFamily = "georgia";
       this.divConteudo.style.fontSize = "20px";
-      this.divConteudo.style.backgroundColor = "pink"; //Remover 
+      this.divConteudo.style.backgroundColor = "pink"; //Remover
       this.painelDireito.appendChild(this.divConteudo);
 
-      //Conteudo do post <<-- 
+      //Conteudo do post <<--
       this.divCont = document.createElement("div");
       this.divConteudo.appendChild(this.divCont);
       this.Conteudo = document.createTextNode("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget tellus nec enim tincidunt gravida ut a nulla. Nullam eu sem fringilla, aliquet justo vel, tempor sapien. Fusce sit amet sagittis tortor. Sed vel leo sapien. Phasellus ac elementum tellus, ut imperdiet odio. Proin ultrices, tellus id tincidunt luctus, augue justo gravida nibh, non suscipit elit orci eu orci. Duis et velit convallis, efficitur neque vitae, luctus nulla. Morbi eget efficitur ex, eu condimentum turpis. Nulla scelerisque cursus mauris, viverra scelerisque tortor auctor vestibulum. Nam vitae quam sit amet lacus porta scelerisque. Nam fringilla ante in arcu maximus commodo. Nulla accumsan nulla ante, vitae scelerisque lectus scelerisque quis. Etiam facilisis, arcu eu eleifend euismod, erat risus egestas turpis, eu facilisis augue erat eget dui. Nulla id est sit amet tortor viverra porta at iaculis arcu. Quisque eu rutrum urna, in suscipit ipsum. Ut ac aliquet purus. Vestibulum faucibus libero id justo tempor vestibulum. Suspendisse eu pharetra purus, in euismod tortor.");
@@ -436,13 +496,11 @@ const App = {
       //DIV botão enviar
       this.divBotao = document.createElement("div");
       //Setar estilo da div
-      this.divBotao.style.textAlign = "center";
       this.divBotao.style.justifyContent = "center";
       this.divBotao.style.height = "12%";
       this.divBotao.style.width = "100%";
       this.divBotao.style.display = "flex";
       this.divBotao.style.flexDirection = "colum";
-      this.divBotao.style.alignItems = "center";
       this.divBotao.style.display = "none";
       this.divConteudo.appendChild(this.divBotao);
       //Botao enviar
@@ -456,9 +514,6 @@ const App = {
       this.divBotao.appendChild(this.Botao);
 
     },
-
-
-
 
   },
 };
