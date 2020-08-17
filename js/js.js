@@ -507,7 +507,6 @@ const App = {
       this.divBotao.appendChild(this.Botao);
 
     },
-
   },
 };
 
