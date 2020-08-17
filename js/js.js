@@ -1,3 +1,5 @@
+"use strict"
+
 const App = {
   init: function () {
     console.log("Start");
@@ -8,6 +10,10 @@ const App = {
     App.events.linkedinIcon();
     App.events.Botao();
     //App.controller.renderMenuItens(); //Renderiza menu dos itens <------------
+
+    // Popular o array de posts
+
+
     console.log("After start", this);
   },
 
@@ -94,7 +100,7 @@ const App = {
 
       //Função CRUD - Create e Save
       App.components.Botao.onclick = function () {
-        App.controller.createPost(); //função criar post
+        //App.controller.createPost(); //função criar post
         App.controller.savePost(); //função salvar post
       };
     },
@@ -103,20 +109,54 @@ const App = {
   },
 
   store: {
-    /*posts: [
+    posts: [
       { id: 1, title: "Título 1", body: "Corpo 1" },
-      { id: 2, title: "Título 2", body: "Corpo 2" },
-      { id: 3, title: "Título 3", body: "Corpo 3" },
-    ],*/
+    ],
     //App: controller.savePost(),
-
+    selectPost: null,
 
   },
 
   controller: {
 
 
-    renderPostContent: function () {
+    savePost: function () //Função criar/salvar post
+    {
+      const id = App.store.posts.length + 1;
+
+      const newPost = {
+        id,
+        title: App.components.tituloInput.value,
+        body: App.components.painelInput.value
+      }
+
+      App.store.posts.push(newPost);
+
+      App.components.tituloInput.value = "";
+      App.components.painelInput.value = "";
+
+      //console.log('newPost...', newPost);
+
+      const el = document.createElement("div"); //Função para adicionar titulo ao painel esquerdo
+      el.style.textAlign = "left";
+      el.style.marginTop = "8px";
+      el.style.marginLeft = "15px";
+      el.innerHTML = newPost.title;
+
+      //Evento ao clicar no post
+      el.onclick = function () {
+        console.log('newPost click...', newPost);
+        App.store.selectPost = newPost.id;
+        App.controller.renderPostContent();
+        //console.log('App.store.selectPost...', App.store.selectPost);
+      }
+
+      App.components.menu.appendChild(el);
+      App.components.menuPosts[newPost.id] = el
+    },
+
+    showPosts: function()
+    {
       //Mostrar postagens
       App.components.divTextoBlog.style.display = "block";
       App.components.divTituloPost.style.display = "block";
@@ -126,38 +166,34 @@ const App = {
       App.components.divConteudo.style.display = "block";
       App.components.divCont.style.display = "block";
 
+    },
+
+    hidePosts: function()
+    {
       //Esconder criacao de post/elementos com display none
       App.components.tituloInput.style.display = "none";
       App.components.painelInput.style.display = "none";
       App.components.divBotao.style.display = "none";
       App.components.Botao.style.display = "none";
+    },
 
-      //popular o div com o conteudo (body) do post
-      /*
-      function insertConteudo() {
-      }
-      */
+    renderPostContent: function () {
+      const posts = App.store.posts;
+      const selectPost = App.store.selectPost;
+      App.controller.showPosts();
+      App.controller.hidePosts();
 
-      //Mostrar o div com conteudo
-      let tituloPostagem = "";
-      let conteudeudoPostagem = "";
 
-      if (App.store.selectedPost == 1) {
-        tituloPostagem += App.store.posts[0].title;
-        conteudeudoPostagem += App.store.posts[0].body;
+      //Buscar o post, como voce ja tem o selectPost (id). App.store.posts o obj do post. (.filter)
+      const filtrado = posts.filter(function (select) {
+        return select.id == selectPost;
+      })
+      //console.log('filtrado...', filtrado);
 
-      }
-      else if (App.store.selectedPost == 2) {
-        tituloPostagem += App.store.posts[1].title;
-        conteudeudoPostagem += App.store.posts[1].body;
-      }
-      else {
-        tituloPostagem += App.store.posts[2].title;
-        conteudeudoPostagem += App.store.posts[2].body;
-      }
-      App.components.divTituloPost.innerHTML = tituloPostagem;
-      App.components.divCont.innerHTML = conteudeudoPostagem;
+      App.components.divTituloPost.innerHTML = filtrado[0].title; // post.title
+      App.components.divCont.innerHTML = filtrado[0].body; // post.body
 
+      
     },
 
     renderPostInput: function () {
@@ -175,52 +211,6 @@ const App = {
 
     },
 
-    //Variaveis para createPost e savePost
-    var: inputTitulo = 0,
-    var: inputPainel = 0,
-    var: titulo = Array(),
-    var: corpo = Array(),
-
-    createPost: function () //Adiciona novo post no array de posts em store.posts
-    {
-      inputTitulo++;
-      console.log('Tamanho inputTitulo...', inputTitulo);
-
-      inputPainel++;
-      console.log('Tamanho inputPainel...', inputPainel);
-
-    },
-
-
-    savePost: function () //Função salvar post
-    {
-      titulo[inputTitulo - 1] = App.components.tituloInput.value;
-      //console.log('titulo...', titulo[inputTitulo] );
-      App.components.tituloInput.value = "";
-
-      corpo[inputPainel - 1] = App.components.painelInput.value;
-      //console.log('corpo...', corpo[inputPainel]);
-      App.components.painelInput.value = "";
-
-      //alert("Postagem enviada com sucesso!"); //Mensagem de confirmação de postagem
-
-      console.log('Titulos...', titulo);
-      console.log('Conteudos...', corpo);
-
-      tituloLenght = titulo.length;
-      //console.log('tituloLenght...', tituloLenght);
-
-
-      const el = document.createElement("div"); //Função para adicionar titulo ao painel esquerdo
-      el.style.textAlign= "left";
-      el.style.marginTop = "8px";
-      el.style.marginLeft = "15px";
-      el.id = titulo[inputTitulo - 1]; //el.className = "titulos";
-      el.innerHTML = titulo[inputTitulo - 1];
-
-      App.components.menu.appendChild(el);
-    },
-
 
 
 
@@ -235,6 +225,8 @@ const App = {
     },
 
   },
+  //qm eh vc - onde, ideda, formacao, trabalha com TI, lojinha - 5 anos exp  
+  //Go - google
 
   router: {
     routes: []
@@ -349,6 +341,8 @@ const App = {
       this.PainelBottom.appendChild(this.botaoPostagem);
       //App.events.botaoPostagem();
 
+      /*--------Criar botoes editar e excluir----------*/
+
 
       //Adicionando icones
       this.icones = document.createElement("div");
@@ -421,7 +415,7 @@ const App = {
       this.divTextoBlog.style.marginTop = "20px";
       this.divTextoBlog.style.fontFamily = "georgia";
       this.divTextoBlog.style.fontSize = "30px";
-      this.divTextoBlog.style.backgroundColor = "pink"; //Remover
+      //this.divTextoBlog.style.backgroundColor = "pink"; //Remover
       this.painelDireito.appendChild(this.divTextoBlog);
       //Titulo do post
       this.divTituloPost = document.createElement("div");
@@ -440,13 +434,12 @@ const App = {
       this.divTituloDescricao.style.marginTop = "5px";
       this.divTituloDescricao.style.fontFamily = "georgia";
       this.divTituloDescricao.style.fontSize = "12px";
-      this.divTituloDescricao.style.backgroundColor = "orange"; //Remover
-      //this.divTituloDescricao.style.display = "block";
+      //this.divTituloDescricao.style.backgroundColor = "orange"; //Remover
       this.painelDireito.appendChild(this.divTituloDescricao);
       //Titulo/data do post
       this.divTituloDesc = document.createElement("div");
       this.divTituloDescricao.appendChild(this.divTituloDesc);
-      this.tituloDescricao = document.createTextNode("Title description, Aug 6, 2020");
+      this.tituloDescricao = document.createTextNode("________________________________________________");
       this.divTituloDesc.appendChild(this.tituloDescricao);
 
       //Adicionando DIV para Conteudo do post
@@ -459,7 +452,7 @@ const App = {
       this.divConteudo.style.marginTop = "20px";
       this.divConteudo.style.fontFamily = "georgia";
       this.divConteudo.style.fontSize = "20px";
-      this.divConteudo.style.backgroundColor = "pink"; //Remover
+      //this.divConteudo.style.backgroundColor = "pink"; //Remover
       this.painelDireito.appendChild(this.divConteudo);
 
       //Conteudo do post <<--
