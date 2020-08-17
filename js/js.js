@@ -627,8 +627,6 @@ const App = {
       //this.BotaoEdit.style.display = "none";
       this.divBotao.appendChild(this.Botao);
 
-
-
       /*--------Criar botoes editar e excluir----------*/
       //Botão de Edição
       this.BotaoEdit = document.createElement("button");
