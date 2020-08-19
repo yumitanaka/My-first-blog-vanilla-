@@ -1,5 +1,3 @@
-"use strict"
-
 const App = {
   init: function () {
     console.log("Start");
@@ -12,10 +10,6 @@ const App = {
     App.events.BotaoEdit();
     App.events.BotaoDelete();
     App.events.BotaoAlterar();
-    //App.controller.renderMenuItens(); //Renderiza menu dos itens <------------
-
-    // Popular o array de posts
-
 
     console.log("After start", this);
   },
@@ -166,25 +160,28 @@ const App = {
         App.controller.saveUpdatePost();
       };
     },
-
-
   },
 
   store: {
     posts: [
       { id: 1, title: "Título 1", body: "Corpo 1" },
     ],
-    //App: controller.savePost(),
     selectPost: null,
 
   },
 
   controller: {
 
-
     savePost: function () //Função criar/salvar post
     {
-      const id = App.store.posts.length + 1;
+      const posts = App.store.posts;
+      var id = App.store.posts.length + 1;
+
+      const max = Math.max.apply(null, posts.map(item => item.id));
+      //console.log("maximum...",max);
+
+      id = max + 1;
+      //console.log("id = aux...", id);
 
       const newPost = {
         id,
@@ -197,27 +194,23 @@ const App = {
       App.components.tituloInput.value = "";
       App.components.painelInput.value = "";
 
-      //console.log('newPost...', newPost);
 
       const el = document.createElement("div"); //Função para adicionar titulo ao painel esquerdo
       el.id = App.store.posts.length; //Setar id para elementos divs (el)
-      console.log("el.id...", el.id);
-      const elid = el.id;
-      //el(elid).innerHTML = 'this should have worked...';
       el.style.textAlign = "left";
       el.style.marginTop = "8px";
       el.style.marginLeft = "15px";
       el.innerHTML = newPost.title;
+      App.components.menuPosts[newPost.id] = el;
       //Evento ao clicar no post
       el.onclick = function () {
         console.log('newPost click...', newPost);
         App.store.selectPost = newPost.id;
         App.controller.renderPostContent();
-        //console.log('App.store.selectPost...', App.store.selectPost);
+        console.log('App.store.selectPost click...', App.store.selectPost);
       }
 
       App.components.menu.appendChild(el);
-      App.components.menuPosts[newPost.id] = el
     },
 
     showPosts: function () {
@@ -230,8 +223,6 @@ const App = {
       App.components.divCont.style.display = "block";
       App.components.BotaoEdit.style.display = "inline-block";
       App.components.BotaoDelete.style.display = "inline-block";
-
-
     },
 
     hidePosts: function () {
@@ -295,8 +286,6 @@ const App = {
       App.components.BotaoDelete.style.display = "none";
     },
 
-
-
     updatePost: function () //Editar o conteudo postado
     {
       App.controller.renderPostInputEdit();
@@ -320,32 +309,54 @@ const App = {
       const posts = App.store.posts;
       const selectPost = App.store.selectPost;
 
-
-
       for (var i = 0; i < posts.length; i++) {
         var obj = posts[i];
         if (obj.id == selectPost) {
           obj.title = App.components.tituloInput.value;
           obj.body = App.components.painelInput.value;
-
           break;
         }
       };
 
-      App.controller.savePost.el = obj.title;
-      console.log("App.controller.savePost.el..", App.controller.savePost.el);
       document.getElementById(selectPost).innerHTML = obj.title;
+      console.log("getElementById(selectPost)..", selectPost);
     },
 
 
     deletePost: function () //Deletar o post
     {
+      const posts = App.store.posts;
+      const selectPost = App.store.selectPost;
+      const position = selectPost;
+      var titulo = "";
 
+      console.log('position...', position);
+
+      for (var i = 0; i < posts.length; i++) {
+        var obj = posts[i];
+        if (obj.id == selectPost) {
+          titulo = obj.title;
+          break;
+        }
+      };
+
+      var removeIndex = posts.map(function (item) { return item.title; }).indexOf(titulo); //Deletar pelo título do post
+
+      // remove object
+      posts.splice(removeIndex, 1);
+      App.controller.renderAposDelete();
+      console.log('posts...', posts);
     },
 
+    renderAposDelete: function () {
+      const posts = App.store.posts;
+      const selectPost = App.store.selectPost;
+
+      document.getElementById(selectPost).style.display = "none";
+    }
+
   },
-  //qm eh vc - onde, ideda, formacao, trabalha com TI, lojinha - 5 anos exp  
-  //Go - google
+
 
   router: {
     routes: []
@@ -470,6 +481,8 @@ const App = {
       this.icones.style.marginTop = "5%";
       //this.titulo.style.backgroundColor = "blue";  //Remover
       this.PainelBottom.appendChild(this.icones);
+
+
       //Icone Facebook
       this.facebookIcon = document.createElement("img");
       this.facebookIcon.style.height = "50%";
@@ -481,6 +494,7 @@ const App = {
       this.facebookIcon.src = 'assets/facebook.png';
       this.icones.appendChild(this.facebookIcon);
       //App.events.facebookIcon();
+
 
       //Icone Instagram
       this.instagramIcon = document.createElement("img");
@@ -532,32 +546,13 @@ const App = {
       this.divTextoBlog.style.marginTop = "20px";
       this.divTextoBlog.style.fontFamily = "georgia";
       this.divTextoBlog.style.fontSize = "30px";
-      this.divTextoBlog.style.backgroundColor = "gray"; //Remover
+      //this.divTextoBlog.style.backgroundColor = "gray"; //Remover
       this.painelDireito.appendChild(this.divTextoBlog);
       //Titulo do post
       this.divTituloPost = document.createElement("div");
       this.divTextoBlog.appendChild(this.divTituloPost);
       this.tituloPost = document.createTextNode("TITLE");
       this.divTituloPost.appendChild(this.tituloPost);
-
-      //Adicionando DIV para titulo/data do post
-      // this.divTituloDescricao = document.createElement("div");
-      // this.divTituloDescricao.style.width = "90%";
-      // this.divTituloDescricao.style.height = "1%";
-      // this.divTituloDescricao.style.lineHeight = "50%";
-      // this.divTituloDescricao.style.maxWidth = "100%";
-      // this.divTituloDescricao.style.textAlign = "left";
-      // this.divTituloDescricao.style.padding = "20px";
-      // this.divTituloDescricao.style.marginTop = "5px";
-      // this.divTituloDescricao.style.fontFamily = "georgia";
-      // this.divTituloDescricao.style.fontSize = "12px";
-      // //this.divTituloDescricao.style.backgroundColor = "orange"; //Remover
-      // this.painelDireito.appendChild(this.divTituloDescricao);
-      // //Titulo/data do post
-      // this.divTituloDesc = document.createElement("div");
-      // this.divTituloDescricao.appendChild(this.divTituloDesc);
-      // this.tituloDescricao = document.createTextNode("________________________________________________");
-      // this.divTituloDesc.appendChild(this.tituloDescricao);
 
       //Adicionando DIV para Conteudo do post
       this.divConteudo = document.createElement("div");
@@ -569,7 +564,7 @@ const App = {
       this.divConteudo.style.marginTop = "10px";
       this.divConteudo.style.fontFamily = "georgia";
       this.divConteudo.style.fontSize = "20px";
-      this.divConteudo.style.backgroundColor = "yellow"; //Remover
+      //this.divConteudo.style.backgroundColor = "yellow"; //Remover
       this.painelDireito.appendChild(this.divConteudo);
 
       //Conteudo do post <<--
