@@ -1,6 +1,9 @@
 const App = {
   init: function () {
     console.log("Start");
+
+    this.controller.loadPosts(); //Carregar os posts do localStorage. Caso ñ tenha, add como array vazio
+
     this.components.createComponents();
     App.events.botaoPostagem();
     App.events.facebookIcon();
@@ -12,6 +15,10 @@ const App = {
     App.events.BotaoAlterar();
 
     console.log("After start", this);
+    
+
+    //this.store.posts.push( { id: 1, title: "Título 1", body: "Corpo 1" });
+    this.controller.dumpPosts();
   },
 
   events: {
@@ -163,14 +170,30 @@ const App = {
   },
 
   store: {
-    posts: [
-      { id: 1, title: "Título 1", body: "Corpo 1" },
-    ],
+    storageKey: "StorageKey",
+
+    posts: [],
+
     selectPost: null,
 
   },
 
   controller: {
+
+    loadPosts: function(){ //Storage = string 
+
+      let storage = window.localStorage.getItem(App.store.storageKey); //Pega itens do storage
+
+        if(!storage){
+          stogare = "[]"
+          window.localStorage.setItem(App.store.storageKey, storage);
+        }
+        App.store.posts = JSON.parse(storage); //JSON.parse Transformar de string para Json
+    },
+
+    dumpPosts: function(){
+      window.localStorage.setItem(App.store.storageKey, JSON.stringify(App.store.posts));//Add tudo que estiver em store:posts em storage como string
+    },
 
     savePost: function () //Função criar/salvar post
     {
@@ -211,6 +234,7 @@ const App = {
       }
 
       App.components.menu.appendChild(el);
+      App.controller.dumpPosts();
     },
 
     showPosts: function () {
@@ -303,6 +327,7 @@ const App = {
       App.components.tituloInput.value = filtrado[0].title; // post.title
       //console.log('App.components.tituloInput...', App.components.tituloInput);
       App.components.painelInput.value = filtrado[0].body; // post.body
+      App.controller.dumpPosts();
     },
 
     saveUpdatePost: function () {
@@ -320,6 +345,7 @@ const App = {
 
       document.getElementById(selectPost).innerHTML = obj.title;
       console.log("getElementById(selectPost)..", selectPost);
+      App.controller.dumpPosts();
     },
 
 
@@ -346,6 +372,7 @@ const App = {
       posts.splice(removeIndex, 1);
       App.controller.renderAposDelete();
       console.log('posts...', posts);
+      App.controller.dumpPosts();
     },
 
     renderAposDelete: function () {
@@ -481,8 +508,6 @@ const App = {
       this.icones.style.marginTop = "5%";
       //this.titulo.style.backgroundColor = "blue";  //Remover
       this.PainelBottom.appendChild(this.icones);
-
-
       //Icone Facebook
       this.facebookIcon = document.createElement("img");
       this.facebookIcon.style.height = "50%";
@@ -494,7 +519,6 @@ const App = {
       this.facebookIcon.src = 'assets/facebook.png';
       this.icones.appendChild(this.facebookIcon);
       //App.events.facebookIcon();
-
 
       //Icone Instagram
       this.instagramIcon = document.createElement("img");
