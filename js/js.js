@@ -2,7 +2,58 @@ const App = {
   init: function () {
     console.log("Start");
 
-    this.controller.loadPosts(); //Carregar os posts do localStorage. Caso ñ tenha, add como array vazio
+    //Roteador
+    const url = new URL(window.location.href);
+    console.log('url...', url);
+    //Pesquisar url ao atualizar pagina
+    window.onload = function () {
+      //alert("Page is loaded");
+      var id = url.searchParams.get("id");
+      var edit = url.searchParams.get("edit");
+      var add = url.searchParams.get("add");
+      console.log("id:" + id + "-" + " Edit:" + edit + "-" + " Add:" + add);
+
+      if ((id == null) && (edit == null) && (add == null)) { //Ao carregar a pagina iniciar, renderiza primeiro post
+        //alert("(id == null) && (edit == null) && (add == null)");
+        id = 0;
+        const json = localStorage.getItem("StorageKey");
+        const storageKey = JSON.parse(json);
+        var filter = storageKey[id];
+        App.store.divId = id;
+        console.log('el.id showPostsList', id);
+        App.store.selectPost = filter["id"];
+        console.log('App.store.selectPost showPostsList', App.store.selectPost);
+        App.controller.renderPostContent();
+
+      } else if ((id != null) && (edit == null) && (add == null)) { //Renderizar post por seu id
+        //alert("(id != null) && (edit == null) && (add == null)");
+        const json = localStorage.getItem("StorageKey");
+        const storageKey = JSON.parse(json);
+        var filter = storageKey[id];
+        App.store.divId = id;
+        console.log('el.id showPostsList', id);
+        App.store.selectPost = filter["id"];
+        console.log('App.store.selectPost showPostsList', App.store.selectPost);
+        App.controller.renderPostContent();
+
+      } else if ((id != null) && (edit != null) && (add == null)) { //Renderiza pagina de criar novo post
+        //alert("(id != null) && (edit != null) && (add == null)");
+        const json = localStorage.getItem("StorageKey");
+        const storageKey = JSON.parse(json);
+        var filter = storageKey[id];
+        App.store.divId = id;
+        console.log('el.id showPostsList', id);
+        App.store.selectPost = filter["id"];
+        console.log('App.store.selectPost showPostsList', App.store.selectPost);
+        App.controller.updatePost();
+
+      } else if ((id == null) & (edit == null) & (add != null)) { //Renderiza pagina de edição de post
+        //alert("(id == null) & (edit == null) & (add != null)");
+        App.controller.renderPostInput();
+      }
+    },
+
+      this.controller.loadPosts(); //Carregar os posts do localStorage. Caso ñ tenha, add como array vazio
 
     this.components.createComponents();
     App.events.botaoPostagem();
@@ -14,11 +65,13 @@ const App = {
     App.events.BotaoDelete();
     App.events.BotaoAlterar();
 
+
     console.log("After start", this);
-    
+
 
     //this.store.posts.push( { id: 1, title: "Título 1", body: "Corpo 1" });
     this.controller.dumpPosts();
+    this.controller.showPostsList();
   },
 
   events: {
@@ -35,6 +88,7 @@ const App = {
       //Função onclick para renderizar div p/ postagem - Botao postagem
       App.components.botaoPostagem.onclick = function () {
         App.controller.renderPostInput(); //funcao que vai renderizar o conteudo de criação do post (titulo e body)
+        App.controller.addUrlPostInput();
       };
     },
 
@@ -175,25 +229,59 @@ const App = {
     posts: [],
 
     selectPost: null,
+    divId: null,
 
   },
 
   controller: {
 
-    loadPosts: function(){ //Storage = string 
+    loadPosts: function () { //Storage = string 
 
       let storage = window.localStorage.getItem(App.store.storageKey); //Pega itens do storage
 
-        if(!storage){
-          stogare = "[]"
-          window.localStorage.setItem(App.store.storageKey, storage);
-        }
-        App.store.posts = JSON.parse(storage); //JSON.parse Transformar de string para Json
+      if (!storage) {
+        stogare = "[]"
+        window.localStorage.setItem(App.store.storageKey, storage);
+      }
+      App.store.posts = JSON.parse(storage); //JSON.parse Transformar de string para Json
     },
 
-    dumpPosts: function(){
-      window.localStorage.setItem(App.store.storageKey, JSON.stringify(App.store.posts));//Add tudo que estiver em store:posts em storage como string
+    dumpPosts: function () {
+      window.localStorage.setItem(App.store.storageKey, JSON.stringify(App.store.posts));//Add tud que estiver em store:posts em storage como string
     },
+
+    showPostsList: function () {
+      const posts = App.store.posts;
+      const selectPost = App.store.selectPost;
+      const json = localStorage.getItem("StorageKey");
+      const storageKey = JSON.parse(json);
+      console.log('storageKey', storageKey);
+
+
+      for (var i = 0; i < storageKey.length; i++) {
+        var obj = storageKey[i];
+        const el = document.createElement("div");
+        el.id = i;
+        el.style.textAlign = "left";
+        el.style.marginTop = "8px";
+        el.style.marginLeft = "15px";
+        el.innerHTML = obj.title;
+        App.components.menu.appendChild(el);
+
+        //Evento ao clicar no post
+        el.onclick = function () {
+          var filter = storageKey[el.id];
+          App.store.divId = el.id;
+          console.log('el.id showPostsList', el.id);
+          App.store.selectPost = filter["id"];
+          console.log('App.store.selectPost showPostsList', App.store.selectPost);
+
+          App.controller.urlShowPostsList();
+          App.controller.renderPostContent();
+        };
+      };
+    },
+
 
     savePost: function () //Função criar/salvar post
     {
@@ -229,12 +317,17 @@ const App = {
       el.onclick = function () {
         console.log('newPost click...', newPost);
         App.store.selectPost = newPost.id;
+        App.store.divId = el.id;
         App.controller.renderPostContent();
         console.log('App.store.selectPost click...', App.store.selectPost);
       }
 
       App.components.menu.appendChild(el);
+
       App.controller.dumpPosts();
+      App.controller.urlShowPostsList();
+      App.controller.urlReset(); //Atualiza url para o primeiro Post
+      window.location.reload(true); //Atualiza posts e localstorage
     },
 
     showPosts: function () {
@@ -264,17 +357,24 @@ const App = {
       App.controller.showPosts();
       App.controller.hidePosts();
 
-
+      console.log('selectPost renderPostContent', selectPost);
       //Buscar o post, como voce ja tem o selectPost (id). App.store.posts o obj do post. (.filter)
       const filtrado = posts.filter(function (select) {
         return select.id == selectPost;
       })
-      //console.log('filtrado...', filtrado);
+      console.log('filtrado...', filtrado);
 
       App.components.divTituloPost.innerHTML = filtrado[0].title; // post.title
       App.components.divCont.innerHTML = filtrado[0].body; // post.body
 
     },
+
+    urlShowPostsList: function () { //Roteador
+      const x = App.store.divId;
+
+      history.pushState({ id: x }, "id", "?id=" + x);
+    },
+
 
     renderPostInput: function () {
       //Mostrar criacao de post/elementos
@@ -292,6 +392,13 @@ const App = {
       App.components.BotaoAlterar.style.display = "none";
       App.components.tituloInput.value = "";
       App.components.painelInput.value = "";
+      App.controller.addUrlPostInput();
+    },
+
+    addUrlPostInput: function () { //Roteador
+
+      history.pushState({ add: true }, "add", "?add=true");
+
     },
 
     renderPostInputEdit: function () {
@@ -312,6 +419,7 @@ const App = {
 
     updatePost: function () //Editar o conteudo postado
     {
+      App.controller.urlUpdatePost();
       App.controller.renderPostInputEdit();
       const posts = App.store.posts;
       const selectPost = App.store.selectPost;
@@ -323,16 +431,25 @@ const App = {
       })
       console.log('updatePost filtrado...', filtrado);
 
-
       App.components.tituloInput.value = filtrado[0].title; // post.title
-      //console.log('App.components.tituloInput...', App.components.tituloInput);
       App.components.painelInput.value = filtrado[0].body; // post.body
+
       App.controller.dumpPosts();
+
+    },
+
+    urlUpdatePost: function () { //Roteador
+      const x = App.store.divId;
+
+      history.pushState({ id: x, add: true }, "id&add", "?id=" + x + "&edit=true");
     },
 
     saveUpdatePost: function () {
       const posts = App.store.posts;
       const selectPost = App.store.selectPost;
+      const divId = App.store.divId;
+
+      console.log('selectPost saveUpdatePost', selectPost);
 
       for (var i = 0; i < posts.length; i++) {
         var obj = posts[i];
@@ -343,9 +460,13 @@ const App = {
         }
       };
 
-      document.getElementById(selectPost).innerHTML = obj.title;
-      console.log("getElementById(selectPost)..", selectPost);
+
+      document.getElementById(divId).innerHTML = obj.title;
+      console.log("getElementById(divId)..", divId);
+
       App.controller.dumpPosts();
+      App.controller.urlReset();
+      window.location.reload(true);
     },
 
 
@@ -354,6 +475,8 @@ const App = {
       const posts = App.store.posts;
       const selectPost = App.store.selectPost;
       const position = selectPost;
+      const divId = App.store.divId;
+
       var titulo = "";
 
       console.log('position...', position);
@@ -372,18 +495,33 @@ const App = {
       posts.splice(removeIndex, 1);
       App.controller.renderAposDelete();
       console.log('posts...', posts);
+
+      var node = document.getElementById(divId);
+      if (node.parentNode) {
+        node.parentNode.removeChild(node);
+      }
+
       App.controller.dumpPosts();
     },
 
     renderAposDelete: function () {
       const posts = App.store.posts;
       const selectPost = App.store.selectPost;
+      const divId = App.store.divId;
 
-      document.getElementById(selectPost).style.display = "none";
-    }
+      document.getElementById(divId).style.display = "none";
+      App.controller.urlReset();
+      window.location.reload(true);
+
+    },
+
+    urlReset: function () { //Roteador
+      const x = 0;
+
+      history.pushState({ id: x, add: true }, "id", "?id=" + x);
+    },
 
   },
-
 
   router: {
     routes: []
@@ -493,7 +631,7 @@ const App = {
       this.botaoPostagem.style.borderRadius = "4px";
       this.botaoPostagem.style.fontFamily = "arial";
       this.botaoPostagem.style.borderColor = "gray";  //Remover
-      this.conteudoNovo3 = document.createTextNode("Criar novo post");
+      this.conteudoNovo3 = document.createTextNode("Criar/Editar Post");
       this.botaoPostagem.appendChild(this.conteudoNovo3);
       this.PainelBottom.appendChild(this.botaoPostagem);
       //App.events.botaoPostagem();
@@ -628,7 +766,6 @@ const App = {
       this.divBotao.style.textAlign = "center";
       this.divBotao.style.height = "10%";
       this.divBotao.style.width = "99%";
-      //this.divBotao.style.marginTop = "5%";
       this.divBotao.style.display = "inline-block";
       //this.divBotao.style.backgroundColor = "blue";
       this.divBotao.style.display = "none";
@@ -656,7 +793,6 @@ const App = {
       this.BotaoEdit.style.borderRadius = "4px";
       this.textoBotaoEdit = document.createTextNode("Editar Postagem");
       this.BotaoEdit.appendChild(this.textoBotaoEdit);
-      this.BotaoEdit.style.display = "none";
       this.divBotao.appendChild(this.BotaoEdit);
 
 
@@ -668,7 +804,6 @@ const App = {
       this.BotaoDelete.style.marginTop = "2%";
       this.textoBotaoDelete = document.createTextNode("Deletar Postagem");
       this.BotaoDelete.appendChild(this.textoBotaoDelete);
-      this.BotaoDelete.style.display = "none";
       this.divBotao.appendChild(this.BotaoDelete);
 
       //Botao enviar edição
@@ -680,7 +815,6 @@ const App = {
       this.textoBotaoAlterar = document.createTextNode("Alterar Postagem");
       this.BotaoAlterar.style.marginTop = "2%";
       this.BotaoAlterar.appendChild(this.textoBotaoAlterar);
-      //this.BotaoEdit.style.display = "none";
       this.divBotao.appendChild(this.BotaoAlterar);
     },
   },
