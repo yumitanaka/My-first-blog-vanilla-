@@ -13,8 +13,12 @@ const App = {
       var add = url.searchParams.get("add");
       console.log("id:" + id + "-" + " Edit:" + edit + "-" + " Add:" + add);
 
+<<<<<<< HEAD
       if ((id == null) && (edit == null) && (add == null)) { //Ao carregar a pagina iniciar, renderiza primeiro post
         //alert("(id == null) && (edit == null) && (add == null)");
+=======
+      if ((id == null) && (edit == null) && (add == null)) { //Ao carregar a página iniciar, renderiza primeiro post
+>>>>>>> d75a0aa... Final Commit.
         id = 0;
         const json = localStorage.getItem("StorageKey");
         const storageKey = JSON.parse(json);
